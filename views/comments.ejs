@@ -1,0 +1,161 @@
+<%- include('head.ejs') %>
+<body>
+    <%- include('navbar.ejs') %>
+    <div class="container-fluid heading bs-primary-bg-subtle" >
+        <div class="container d-flex h-100 align-items-center ">
+            <div>  
+            <h1>
+                해설 목록
+            </h1>
+            <span>백준에 연동된 문제 해설 목록을 볼 수 있습니다. 문제에 따라 해설이 존재하지 않을 수 있습니다.</span>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-5">
+        <div class="item d-flex w-100">
+            <div class="w-25 d-flex justify-content-center">
+                <h5>백준 번호</h5>
+            </div>
+            <div class="w-75 d-flex justify-content-center"><h5>문제 제목</h5></div>
+            </div>
+        <div id="items-container"></div>
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center" id="pagination"></ul>
+        </nav>
+    </div>
+    <%- include('footer.ejs') %>
+</body>
+<script>
+        const api = '/api/comments';
+        let currentPage = 1;
+        let totalPages = 1; 
+        function fetchItems(page = 1, limit = 10){
+            $.get(`${api}?page=${page}&limit=${limit}`, function (data){
+                currentPage = data.currentPage;
+                totalPages = data.totalPages;
+                renderItems(data.items);
+                renderPagination();
+            }).fail(function(){
+                alert('서버에 오류가 생겼습니다.');
+            })
+        }
+        function renderItems(items){
+            const container = $('#items-container');
+            container.empty();
+            items.forEach(item => {
+                let baseColor = "";
+                let smallNumber = "";
+
+                switch (item.tearbig) {
+                    case "Bronze":
+                        baseColor = "#ad5600"; // 브론즈색
+                        break;
+                    case "Silver":
+                        baseColor = "#435f7a"; // 실버색
+                        break;
+                    case "Gold":
+                        baseColor = "#ec9a00"; // 골드색
+                        break;
+                    case "Platinum":
+                        baseColor = "#27e2a4"; // 플래티넘색
+                        break;
+                    case "Diamond":
+                        baseColor = "#00b4fc"; // 다이아 색 (밝은 하늘색)
+                        break;   
+                    case "Ruby":
+                        baseColor = "#ff0062"; // 루비색
+                        break;
+                    default:
+                        baseColor = "#000000"; 
+                        break;
+                }
+                switch (item.tearsmall) {
+                    case "Ⅰ":   // 가장 강한 색상
+                        smallNumber = "1"; // 불투명 (가장 진한 색)
+                        break;
+                    case "Ⅱ":
+                        smallNumber = "2";
+                        break;
+                    case "Ⅲ":
+                        smallNumber = "3";
+                        break;
+                    case "Ⅳ":
+                        smallNumber = "4";
+                        break;
+                    case "Ⅴ":   // 가장 약한 색상
+                        smallNumber = "5";
+                        break;
+                    default:
+                        smallNumber = "6"; // 기본값은 진하게
+                        break;
+                }
+                container.append(`
+                
+                <div class="item d-flex w-100 ">
+                    <div class="w-25 d-flex justify-content-center">
+                       <a href="https://www.acmicpc.net/problem/${item._id}" class="link-underline-light"><i class="bi bi-link mx-1"></i>${item._id}</a>
+                    </div>
+                    <div class="w-75 d-flex justify-content-center">
+                        <a href="/comment/${item._id}" class="link-underline-light" style="color: ${baseColor}"><i class="bi bi-dice-${smallNumber} mx-1" ></i>${item.name}</a>
+                        </div>
+                </div>`)
+            });
+        }
+        function renderPagination(){
+            const pagination = $('#pagination');
+            pagination.empty();
+
+            // 이전 버튼
+            const prevClass = currentPage === 1 ? 'disabled' : '';
+            pagination.append(`
+                <li class="page-item ${prevClass}">
+                    <a class="page-link" href="#" aria-label="Previous" data-page="${currentPage - 1}">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            `);
+
+            // 페이지 번호 (전체 페이지 수가 많을 경우, 페이지 네비게이션을 축소할 수 있습니다)
+            for (let i = 1; i <= totalPages; i++) {
+                // 현재 페이지 전후 2페이지까지만 표시 (옵션)
+                if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
+                    const activeClass = currentPage === i ? 'active' : '';
+                    pagination.append(`
+                        <li class="page-item ${activeClass}">
+                            <a class="page-link" href="#" data-page="${i}">${i}</a>
+                        </li>
+                    `);
+                } else if (i === currentPage - 3 || i === currentPage + 3) {
+                    pagination.append(`
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                    `);
+                }
+            }
+
+            // 다음 버튼
+            const nextClass = currentPage === totalPages ? 'disabled' : '';
+            pagination.append(`
+                <li class="page-item ${nextClass}">
+                    <a class="page-link" href="#" aria-label="Next" data-page="${currentPage + 1}">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            `);
+        }
+        $(document).on('click', '.page-link', function(e) {
+            e.preventDefault();
+            const page = parseInt($(this).data('page'));
+            if (page >= 1 && page <= totalPages) {
+                fetchItems(page);
+            }
+        });
+
+        $(document).ready(function() {
+            fetchItems();
+        });
+</script>
+<script src="/js/searchbox.js"></script>
+<script src="/js/header.js"></script>
+</html>

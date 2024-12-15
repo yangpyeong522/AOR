@@ -1,0 +1,82 @@
+<%- include('head.ejs') %>
+<body>
+    <%- include('navbar.ejs') %>
+    <div class="container-fluid heading" id="heading">
+        <div class="container d-flex h-100 align-items-center ">
+            <div>  
+            <h1>
+                <%=comment._id%> <%=comment.name%> <a href="/edit/<%=comment._id%>"><i class="bi bi-pencil-square"></i></a>
+            </h1>
+            <span><%=comment.tearbig%> <%=comment.tearsmall%></span>
+            </div>
+        </div>
+    </div>
+        <div class="container">
+            <div class="row mt-4">
+                <div class="col-4">
+                    <div id="list-example" class="list-group">    
+                        <a class="list-group-item list-group-item-action" href="#list-item-1"><strong>1.</strong>문제풀이</a>
+                        <a class="list-group-item list-group-item-action" href="#list-item-2"><strong>2.</strong>테스트케이스</a>
+                    </div>
+                </div>
+                <div class="col-8">
+                    <div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-smooth-scroll="true" class="scrollspy-example" tabindex="0">
+                        <h4 id="list-item-1"><strong>1.</strong>문제 풀이</h4>
+                        <p id="eraser">
+                            <%=comment.answer%>
+                        </p>
+                        <h4 id="list-item-2"><strong>2.</strong>테스트케이스</h4>
+                        <p id="eraser2">
+                            <%=comment.testcase%>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="w-100 h-auto text-center p-2 d-flex gap-3 align-items-center flex-row">
+                    <%for(var i=0;i<comment.tags.length;i++){%>
+                        <div class="border border-secondary-subtle d-flex justify-content-center rounded-pill align-items-center recommend-box grad-right" style="width: 100px">
+                            <a href="/" class="link-underline-hover"><%=comment.tags[i]%></a> 
+                        </div>
+                    <%}%>
+            </div>
+        </div>
+        <script>
+            let k = document.getElementById("eraser");
+            k.innerHTML = k.innerText;
+            
+            let l = document.getElementById("eraser2");
+            l.innerHTML = l.innerText;
+
+            let heading = document.getElementById("heading");
+            let baseColor = "#0dcaf0";
+            let rank ="<%=comment.tearbig%>";
+            switch (rank) {
+                case "Bronze":
+                    baseColor = "#ffb366"; // 연한 브론즈색
+                    break;
+                case "Silver":
+                    baseColor = "#7aa5c3"; // 연한 실버색
+                    break;
+                case "Gold":
+                    baseColor = "#ffd966"; // 연한 골드색
+                    break;
+                case "Platinum":
+                    baseColor = "#8ff5c4"; // 연한 플래티넘색
+                    break;
+                case "Diamond":
+                    baseColor = "#80d4ff"; // 연한 다이아 색 (밝은 하늘색)
+                    break;   
+                case "Ruby":
+                    baseColor = "#ff66a3"; // 연한 루비색
+                    break;
+                default:
+                    baseColor = "#66e0ff"; // 연한 디폴트 색 (밝은 청록색)
+                    break;
+            }
+                heading.style.backgroundColor = baseColor;
+        </script>
+         <%- include('footer.ejs') %>
+</body>
+<script src="/js/searchbox.js"></script>
+<script src="/js/header.js"></script>
+</html>

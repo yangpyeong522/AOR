@@ -1,0 +1,34 @@
+<%- include('head.ejs') %>
+<body>
+    <%- include('navbar.ejs') %>
+    <div class="container mt-5">
+        <form action="/write" method="post">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" name="_id" id="floatingtitle" placeholder="문제번호">
+                <label for="floatingtitle">문제번호</label>
+            </div>
+            <div class="form-floating mb-3">
+                <textarea class="form-control" id="textarea1" style="height: 200px;" name="answer"></textarea>
+                <label for="textarea1" class="form-label">문제 풀이</label>
+            </div>
+            <div class="form-floating mb-3">
+                <textarea class="form-control" id="textarea2" name="testcase" style="height: 200px;"></textarea>
+                <label for="textarea2" class="form-label">테스트케이스들</label>
+            </div>
+            <button type="submit" class="btn btn-primary" id="liveToastBtn">올리기</button>
+        </form>
+    </div> 
+    <%- include('footer.ejs') %>
+    <div class="toast position-fixed bottom-0 end-0 m-3" role="alert" aria-live="assertive" aria-atomic="true" id="errorToast">
+        <div class="toast-header bg-danger text-white">
+          <strong class="me-auto">에러</strong>
+          <small>지금</small>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+          에러 메시지
+        </div>
+    </div>
+</body><script src="/js/searchbox.js"></script>
+<script src="/js/header.js"></script>
+</html>

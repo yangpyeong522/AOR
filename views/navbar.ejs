@@ -1,0 +1,36 @@
+<nav class="navbar navbar-expand-lg sticky-top shadow bg-white">
+    <div class="container ">
+        <a class="navbar-brand" href="/">
+            <svg width="97" height="35" viewBox="0 0 97 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50.6854 34.2348C41.2686 34.2348 33.6298 27.1568 33.6298 17.0936C33.6298 7.07795 41.2686 0 50.6854 0C60.198 0 67.7411 7.07795 67.7411 17.0936C67.7411 27.1568 60.198 34.2348 50.6854 34.2348ZM50.6854 29.4683C57.3158 29.4683 62.1199 24.6535 62.1199 17.0936C62.1199 9.53371 57.3151 4.81631 50.6854 4.81631C44.0558 4.81631 39.2531 9.53371 39.2531 17.0936C39.2531 24.6535 44.0551 29.4683 50.6854 29.4683Z" fill="#29ABE2"/>
+            <path d="M84.6506 0.433576C92.5781 0.433576 96.4695 5.00743 96.4695 10.4485C96.4695 14.3969 94.3553 18.6338 88.7341 20.0305L97 33.8979H90.4661L82.779 20.511H78.5968V33.8979H73.1203V0.430603L84.6506 0.433576ZM84.6506 4.91149H78.5968V16.1305H84.6506C88.9263 16.1305 90.8483 13.7706 90.8483 10.4485C90.8483 7.07794 88.9263 4.91522 84.6506 4.91522V4.91149Z" fill="#29ABE2"/>
+            <path d="M15.1367 25.9699C18.1079 25.9679 21.0353 26.6882 23.6677 28.069C26.3002 29.4498 28.5592 31.45 30.2511 33.8979H30.2674L18.3046 0.385254H11.9629L0 33.8979H0.0229971C1.71478 31.4501 3.9737 29.45 6.60603 28.0692C9.23837 26.6884 12.1656 25.968 15.1367 25.9699ZM15.1367 7.02962L20.5656 22.5822H9.65725L15.1367 7.02962Z" fill="#29ABE2"/>
+            <path d="M46.7079 10.4247H43.825V15.3771H46.7079V10.4247Z" fill="#29ABE2"/>
+            <path d="M57.4152 10.4247H54.5322V15.3771H57.4152V10.4247Z" fill="#29ABE2"/>
+            </svg>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/write">해설 작성하기</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " aria-current="page" href="/comments">해설 전체보기</a>
+                </li>
+            </ul>
+            <form class="d-flex search-box" action="/search" method="post">
+                <div class="position-relative search-container">
+                    <input class="form-control rounded-pill search-input border border-info" type="search" placeholder="백준 문제번호를 입력하세요." aria-label="Search" id="searchInput" name="searcher">
+                    <button class="btn rounded-pill position-absolute search-button" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                    <div class="list-group mt-3 hidden" id="suggestionList">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</nav>

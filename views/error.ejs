@@ -1,0 +1,25 @@
+<%- include('head.ejs') %>
+<body>
+    <%- include('navbar.ejs') %>
+    <div class="d-flex flex-column align-items-center justify-content-center min-vh-100 error-container-wrapper">
+        <div class="error-container">
+          <!-- 에러 아이콘 (Bootstrap Icons 사용) -->
+          <i class="bi bi-exclamation-triangle-fill error-icon"></i>
+          
+          <!-- 에러 코드 -->
+          <h1 class="error-code"><%=errorcode%></h1>
+          
+          <!-- 에러 메시지 -->
+          <p class="error-message"><%=error%></p>
+          
+          <!-- 홈으로 돌아가기 버튼 -->
+          <a href="/" class="btn btn-danger home-button">
+            <i class="bi bi-house-fill me-2"></i>홈으로 돌아가기
+          </a>
+        </div>
+      </div>
+    <%- include('footer.ejs') %>
+</body>
+<script src="/js/searchbox.js"></script>
+<script src="/js/header.js"></script>
+</html>

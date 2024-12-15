@@ -1,0 +1,168 @@
+* {
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+body {
+    height: 100vh;
+    background-color: #ffffff;
+}
+
+.search-container {
+    position: relative;
+    flex: 1;
+}
+
+.search-button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border: none;
+    font-size: 1.1rem;
+    padding: 0 1rem;
+    cursor: pointer;
+}
+
+.search-input {
+    padding-right: 4rem;
+    height: 3.5rem;
+    font-size: 1.1rem;
+    box-shadow: 0 0 10px rgba(13, 202, 240, 0.3);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.search-input:focus {
+    box-shadow: 0 0 15px rgba(13, 202, 240, 0.5);
+    outline: none;
+    border-color: #0dcaf0;
+}
+
+.bi-search {
+    display: inline-block;
+    filter: drop-shadow(0px 0px 5px rgba(13, 202, 240, 0.5));
+    transition: filter 0.3s ease, color 0.3s ease;
+    color: #0dcaf0;
+}
+
+.search-button:hover .bi-search {
+    color: #000000;
+}
+
+@media (max-width: 576px) {
+    .search-input {
+        height: 3rem;
+    }
+}
+
+.recommend-box {
+    height: 2rem;
+}
+
+@media (min-width: 1500px) {
+    .recommend-box {
+        width: 150px !important;
+    }
+}
+
+.heading{
+    height: 150px;
+    background-color: #d9f9ff;
+}
+.item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+footer *{
+    font-family: "Unbounded", "Gowun Dodum";
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal; 
+}
+
+  
+  .link-underline-hover {
+    color: #000000;
+    text-decoration: none; /* 기본 밑줄 제거 */
+    transition: text-decoration-thickness 0.3s ease, text-underline-offset 0.3s ease;
+  }
+  
+  .link-underline-hover:hover {
+    text-decoration-color: #000000;
+    text-decoration: underline; /* hover 시 밑줄 추가 */
+    text-decoration-thickness: 1px; /* 밑줄을 얕게 설정 */
+    text-underline-offset: 3px; /* 밑줄과 텍스트 사이 간격 설정 */
+  }
+  
+  #suggestionList {
+    border: 1px solid #0dcaf0 ;
+    box-shadow: 0 0 15px rgba(13, 202, 240, 0.5);
+    position: absolute; /* 추천 목록을 절대적으로 위치시킴 */
+    top: 100%; /* 입력창 바로 아래에 위치 */
+    left: 0;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000; /* 다른 요소 위에 표시되도록 설정 */
+  }
+  /* 추천 목록 항목에 그림자와 배경색 추가 */
+  .list-group-item {
+    border: none;
+    border-bottom: 1px solid #ddd;
+  }
+  .list-group-item:last-child {
+    border-bottom: none;
+  }
+
+  
+  /* 추천 목록이 보이지 않을 때 숨김 */
+  #suggestionList.hidden {
+    border: none;
+  }
+
+  #suggestionList.visible {
+    border: 1px solid #0dcaf0 ;
+  }
+
+  .error-container-wrapper {
+    background-color: #f8f9fa; /* 연한 회색 배경 */
+  }
+  .error-container {
+    max-width: 600px;
+    margin: auto;
+    text-align: center;
+    padding: 40px 20px;
+  }
+  .error-icon {
+    font-size: 100px;
+    color: #dc3545; /* 빨간색 */
+    margin-bottom: 20px;
+  }
+  .error-code {
+    font-size: 72px;
+    font-weight: bold;
+    color: #343a40; /* 진한 회색 */
+  }
+  .error-message {
+    font-size: 24px;
+    color: #6c757d; /* 중간 회색 */
+    margin-bottom: 30px;
+  }
+  .home-button {
+    font-size: 18px;
+  }
+  
+  @media (max-width: 576px) {
+    .error-icon {
+      font-size: 60px;
+    }
+    .error-code {
+      font-size: 48px;
+    }
+    .error-message {
+      font-size: 18px;
+    }
+    .home-button {
+      font-size: 16px;
+    }
+  }
