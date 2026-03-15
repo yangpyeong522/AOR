@@ -93,10 +93,10 @@
                 
                 <div class="item d-flex w-100 ">
                     <div class="w-25 d-flex justify-content-center">
-                       <a href="https://www.acmicpc.net/problem/${item._id}" class="link-underline-light"><i class="bi bi-link mx-1"></i>${item._id}</a>
+                       <a href="https://www.acmicpc.net/problem/${item.problem_id}" class="link-underline-light"><i class="bi bi-link mx-1"></i>${item.problem_id}</a>
                     </div>
                     <div class="w-75 d-flex justify-content-center">
-                        <a href="/comment/${item._id}" class="link-underline-light" style="color: ${baseColor}"><i class="bi bi-dice-${smallNumber} mx-1" ></i>${item.name}</a>
+                        <a href="/comment/${item.problem_id}" class="link-underline-light" style="color: ${baseColor}"><i class="bi bi-dice-${smallNumber} mx-1" ></i>${item.title}</a>
                         </div>
                 </div>`)
             });

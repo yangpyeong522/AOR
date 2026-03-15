@@ -1,0 +1,37 @@
+<%- include('head.ejs') %>
+<body>
+    <%- include('navbar.ejs') %>
+    <div class="container-fluid heading" id="heading">
+        <div class="container d-flex h-100 align-items-center ">
+            <div>  
+            <h1>
+                ip"<%=myip%>"의 작성 내역
+           </h1>
+            <span class="text-secondary">
+                <% if(Object.keys(version).length){ %>최근 수정 시각 : <%=formatDate(version[0].when)%> 
+                   ·   <% } %>작성 문서 개수 : <%=Object.keys(version).length%></span>
+            </div>
+        </div>
+    </div>
+    <div class="w-100 pt-0" >
+        <div id="historybox" class="container mt-4">
+            <ul>
+                <% version.forEach(function(ver, idx) { %>
+                    <li><span> <span class="me-3"><%=ver.comment.title%> </span><%=formatDate(ver.when)%> ( <a href="/comment/version/<%=ver.problem_id%>/<%=ver.version%>">보기</a> | <a href="/edit/version/<%=ver.problem_id%>/<%=ver.version%>">이 버전에서 수정하기</a>) <strong>버전<%=ver.version%></strong>/<strong><a href="/user/<%=ver.ip%>"><%=ver.ip%></a></strong> </span></li>
+                  <% }); %>
+                </ul>
+        </div>
+    </div>
+    <%- include('footer.ejs') %>
+</body>
+<script src="/js/searchbox.js"></script>
+<script src="/js/header.js"></script>
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-viewer.min.js"></script>
+<script>
+            let heading = document.getElementById("heading");
+            const defaultGradient = ["#b3f0ff", "#e6fcff"];
+            const [startColor, endColor] =defaultGradient;
+            heading.style.background = `linear-gradient(to right, ${startColor}, ${endColor})`;
+
+</script>
+</html>

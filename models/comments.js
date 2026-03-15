@@ -2,34 +2,34 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../sequelize');
 
 const comments = sequelize.define('comments', {
-    _id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        primaryKey: true,
+    problem_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
     },
-    name: {
-        type: DataTypes.STRING(255),
-        allowNull: false,
-    },
-    tearbig: {
-        type: DataTypes.STRING(100),
-        allowNull: false,
+    title: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
     },
     tearsmall: {
-        type: DataTypes.STRING(100),
-        allowNull: false,
+      type: DataTypes.STRING(255),
+      allowNull: false,
     },
-    answer: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-    },
-    testcase: {
-        type: DataTypes.TEXT,
+    tearbig: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
     },
     tags: {
-        type: DataTypes.JSON,
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
     },
-}, {
+    views: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+    },
+  }, {
     tableName: 'comments',
     timestamps: false,
 });

@@ -1,34 +1,205 @@
 <%- include('head.ejs') %>
 <body>
     <%- include('navbar.ejs') %>
-    <div class="container mt-5">
-        <form action="/write" method="post">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" name="_id" id="floatingtitle" placeholder="문제번호">
-                <label for="floatingtitle">문제번호</label>
+    <div class="w-100 pt-0"  style="height: 90%;">
+        <div class="container d-flex justify-content-center flex-column h-100" id="beforeWriting">
+            <h3 class="mx-auto">해설 추가하기</h3>
+            <form class="d-flex search-box w-25 mt-4 mx-auto" method="post" id="problemForm">
+                <div class="position-relative search-container">
+                    <input class="form-control rounded-pill search-input border border-info" type="search" placeholder="백준 문제번호를 입력하세요." aria-label="Search" id="problemInput" name="probleminputer">
+                    <button class="btn rounded-pill position-absolute search-button" type="submit">
+                        <i class="bi bi-plus-lg"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="d-none flex-column h-100" id="inWriting">
+            <div class="container-fluid headinginwriting" id="heading">
+                <div class="container d-flex h-100 align-items-center ">
+                    <div>  
+                    <h1 id="titleset">
+                        
+                    </h1>
+                    <span id="tearset"></span>
+                    </div>
+                </div>
             </div>
-            <div class="form-floating mb-3">
-                <textarea class="form-control" id="textarea1" style="height: 200px;" name="answer"></textarea>
-                <label for="textarea1" class="form-label">문제 풀이</label>
+            <div id="toolbar" class="container mt-4 d-flex justify-content-between">
+                <span id="checkyouruser" class="superwarning-blink-animation">
+                    
+                </span>
+                <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                    <!-- <button type="button" class="btn btn-danger"><i class="bi bi-trash3-fill"></i> &nbsp; 삭제</button> -->
+                    <button type="button" id="goback" class="btn btn-warning" style="color: white;"><i class="bi bi-x-circle-fill"></i> &nbsp; 취소</button>
+                    <button type="button" id="saver" class="btn btn-success"><i class="bi bi-check-circle-fill"></i> &nbsp; 저장</button>
+                </div>
             </div>
-            <div class="form-floating mb-3">
-                <textarea class="form-control" id="textarea2" name="testcase" style="height: 200px;"></textarea>
-                <label for="textarea2" class="form-label">테스트케이스들</label>
+            <div id="editor" class="no-noto container mt-3">
+                
             </div>
-            <button type="submit" class="btn btn-primary" id="liveToastBtn">올리기</button>
-        </form>
+        </div>
     </div> 
     <%- include('footer.ejs') %>
-    <div class="toast position-fixed bottom-0 end-0 m-3" role="alert" aria-live="assertive" aria-atomic="true" id="errorToast">
-        <div class="toast-header bg-danger text-white">
-          <strong class="me-auto">에러</strong>
-          <small>지금</small>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+    <div class="toast-container">
+        <div id="errorToast" class="toast align-items-center border-danger rounded-pill" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="d-flex">
+            <div class="toast-body d-flex align-items-center" id="toastMessage">
+              에러가 발생했습니다.
+            </div>
+            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
         </div>
-        <div class="toast-body">
-          에러 메시지
+      </div>
+      <div class="toast-container">
+        <div id="successToast" class="toast align-items-center border-success rounded-pill" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="d-flex">
+            <div class="toast-body d-flex align-items-center" id="toastSMessage">
+              성공적으로 수행했습니다.
+            </div>
+            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
         </div>
-    </div>
-</body><script src="/js/searchbox.js"></script>
+      </div>
+</body>
+
+<script src="/js/searchbox.js"></script>
 <script src="/js/header.js"></script>
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+<script>
+    let mydata;
+    document.getElementById('problemForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const problemNumber = document.getElementById('problemInput').value;
+        console.log("입력한 문제번호:", problemNumber);
+
+        fetch('/api/rightproblem', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ probleminputer : problemNumber })
+        })
+        .then(async response =>  {
+            if (!response.ok) {
+                // JSON 형식의 에러 메시지를 받도록 시도
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(`${response.status} ${errorData.error}`);
+            }
+            return response.json();
+        })
+        .then(async data => {
+            mydata = data;
+            console.log('응답 데이터:', data);
+            document.getElementById('toastSMessage').innerHTML = 
+                `<i class="bi bi-check2-circle me-2"></i>` + `<span class="my-auto">${data['_id']}를 정상적으로 조회했습니다.</span>`;
+        
+            var toastElement = document.getElementById('successToast');
+            var toast = new bootstrap.Toast(toastElement);
+            toast.show();
+            const beforeWriting = document.getElementById('beforeWriting');
+            beforeWriting.classList.add('d-none'); 
+            const editor = new toastui.Editor({
+                el: document.querySelector('#editor'),
+                height: '500px',
+                initialEditType: 'markdown',  // 'wysiwyg' 모드로 변경도 가능
+                previewStyle: 'vertical',       // 미리보기 스타일: vertical 또는 tab
+                // 추가 옵션을 통해 이미지 업로드, 테마 변경 등을 설정할 수 있습니다.
+            });  
+            const inWriting = document.getElementById('inWriting');
+            inWriting.classList.add('d-flex'); 
+            inWriting.classList.remove('d-none'); 
+            const titleset = document.getElementById('titleset');
+            const tearset = document.getElementById('tearset');
+            titleset.innerHTML = mydata._id +' ' + mydata.name;
+            if(!mydata.existingComments){
+                titleset.innerHTML += ' (새 해설 작성)';
+            }
+            let tagtext = "";
+            mydata.tags.forEach( (item,idx) => { 
+            if(idx == mydata.tags.length -1){
+                tagtext += item ;
+            }else{
+                tagtext += item + ', ';
+            }} )
+            tearset.innerHTML = mydata.tearbig + ' ' + mydata.tearsmall + ' · ' + tagtext;
+            let heading = document.getElementById("heading");
+            let rank = mydata.tearbig;
+
+            // 티어별 연한(파스텔) 그라디언트 컬러 맵
+            const gradientMap = {
+                "Bronze": ["#ffe6cc", "#ffd5b2"],   // 더 연한 브론즈 톤
+                "Silver": ["#dce7ef", "#ebf3f8"],   // 더 연한 실버 톤
+                "Gold": ["#fff4d9", "#fff9e6"],     // 더 연한 골드 톤
+                "Platinum": ["#e3fef4", "#edfef8"], // 더 연한 플래티넘 톤
+                "Diamond": ["#d9f2ff", "#ecf8ff"],  // 더 연한 다이아 톤
+                "Ruby": ["#ffd1e4", "#ffe0ec"]      // 더 연한 루비 톤
+            };
+
+            // default (해당 티어가 없을 때 적용할 연한 색상)
+            const defaultGradient = ["#b3f0ff", "#e6fcff"];
+
+            // rank에 해당하는 색상 배열을 가져오고, 없으면 defaultGradient 사용
+            const [startColor, endColor] = gradientMap[rank] || defaultGradient;
+
+            // 그라디언트 배경 적용
+            heading.style.background = `linear-gradient(to right, ${startColor}, ${endColor})`;
+            var myip = '0.0.0.0';
+            await fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(async data =>  {
+                myip = data.ip;
+            })
+            .catch(error => console.error('에러 발생:', error));
+
+            const checkyouruser = document.getElementById('checkyouruser');
+            checkyouruser.innerText = `비로그인 상태로 편집합니다. 로그인하지 않은 상태로 문서 편집을 저장하면, 편집 역사에 본인이 사용하는 IP(${myip}) 주소 전체가 영구히 기록됩니다.`;
+
+            document.getElementById('goback').addEventListener('click',()=>{
+                history.back();
+            });
+            document.getElementById('saver').addEventListener('click', async ()=>{
+                const writing_doc = editor.getMarkdown();
+
+                const res = await fetch('/api/version', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ problem_id: mydata._id , doc: writing_doc }),
+                }).then(async response => {
+                    if (!response.ok) {
+                        // JSON 형식의 에러 메시지를 받도록 시도
+                        const errorData = await response.json().catch(() => ({}));
+                        throw new Error(`${response.status} ${errorData.error}`);
+                    }
+                    return response.json();
+                }).then(data => {
+                    document.getElementById('toastSMessage').innerHTML = 
+                        `<i class="bi bi-check2-circle me-2"></i>` + `<span class="my-auto">${data.version}을 성공적으로 추가했습니다.</span>`;
+                
+                    var toastElement = document.getElementById('successToast');
+                    var toast = new bootstrap.Toast(toastElement);
+                    toast.show();
+                    window.location.href = `/comment/${data.version}`;
+                })
+                .catch(error => {
+                    document.getElementById('toastMessage').innerHTML = 
+                    `<i class="bi bi-x-circle me-2"></i>` + `<span class="my-auto">${error.message}</span>`;
+                    console.log(error.message);
+                    var toastElement = document.getElementById('errorToast');
+                    var toast = new bootstrap.Toast(toastElement);
+                    toast.show();
+                });
+            });
+            
+        })
+        .catch(error => {
+            document.getElementById('toastMessage').innerHTML = 
+            `<i class="bi bi-x-circle me-2"></i>` + `<span class="my-auto">${error.message}</span>`;
+    
+            var toastElement = document.getElementById('errorToast');
+            var toast = new bootstrap.Toast(toastElement);
+            toast.show();
+        });
+    });
+</script>
 </html>

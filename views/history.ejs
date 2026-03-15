@@ -4,15 +4,10 @@
     <div class="container-fluid heading" id="heading">
         <div class="container d-flex h-100 align-items-center ">
             <div>  
-                <div class="d-flex align-items-center"> <h1 class="me-2">
-                    <%=comments.problem_id%> <%=comments.title%> 
-                </h1>
-                <h3> <% if(version.isversion){ %>
-                    (<%=version.version%> 버전)
-                <% } %></h3></div>
-           
-               
-            <span class="text-secondary"><%=comments.tearbig%> <%=comments.tearsmall%> · 최근 수정 시각: <%=formatDate(version.when)%>  · 작성자 : <a href="/user/<%=version.ip%>"><%=version.ip%></a></span>
+            <h1>
+                <%=comments.problem_id%> <%=comments.title%>
+            </h1>
+            <span class="text-secondary"><%=comments.tearbig%> <%=comments.tearsmall%></a></span>
             </div>
         </div>
     </div>
@@ -25,16 +20,17 @@
 
             <!-- flex-shrink-0: 버튼 그룹이 축소되지 않음 -->
             <div class="btn-group flex-shrink-0" role="group">
-                <a type="button" href="/edit/version/<%=comments.problem_id%>/<%=version.version%>" class="btn btn-outline-primary">
+                <a type="button" href="/edit/version/<%=comments.problem_id%>/<%=version[0].version%>" class="btn btn-outline-primary">
                     <i class="bi bi-pencil-square"></i> 편집
-                </a>
-                <a type="button" href="/history/<%=version.problem_id%>" class="btn btn-outline-primary">
-                    <i class="bi bi-journals"></i> 역사
                 </a>
             </div>
         </div>
-        <div id="viewer" class="container mt-4">
-
+        <div id="historybox" class="container mt-4">
+            <ul>
+                <% version.forEach(function(ver, idx) { %>
+                    <li><span><%=formatDate(ver.when)%> ( <a href="/comment/version/<%=comments.problem_id%>/<%=ver.version%>">보기</a> | <a href="/edit/version/<%=comments.problem_id%>/<%=ver.version%>">이 버전에서 수정하기</a>) <strong>버전<%=ver.version%></strong>/<strong><a href="/user/<%=ver.ip%>"><%=ver.ip%></a></strong> </span></li>
+                  <% }); %>
+                </ul>
         </div>
     </div>
     <%- include('footer.ejs') %>
@@ -64,12 +60,5 @@
             // 그라디언트 배경 적용
             heading.style.background = `linear-gradient(to right, ${startColor}, ${endColor})`;
 
-            // 서버에서 넘겨준 doc 변수를 JS 문자열로 안전하게 파싱
-            const markdown = <%- JSON.stringify(version.doc) %>;
-            const Viewer = toastui.Editor;
-            const viewer = new Viewer({
-                el: document.getElementById('viewer'),
-                initialValue: markdown,
-            });
 </script>
 </html>

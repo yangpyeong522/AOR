@@ -15,4 +15,24 @@ document.addEventListener("DOMContentLoaded", function () {
         link.classList.remove("active");
       }
     });
+
+    const navContent = document.getElementById('navbarSupportedContent');
+    const navbarToggler = document.getElementById('navbarToggler');
+    const spanIcon = navbarToggler.querySelector('.navbar-toggler-icon');
+    const xIcon = navbarToggler.querySelector('.bi-x');
+    console.log("완료")
+    // 1) 'hidden.bs.collapse': 메뉴가 접힌 직후 발생 (collapsed 상태)
+    navContent.addEventListener('hidden.bs.collapse', () => {
+      // 접힌 상태 → span 숨김, X 아이콘 표시
+      spanIcon.style.display = 'inline-block';
+      xIcon.style.display = 'none';
+    });
+  
+    // 2) 'shown.bs.collapse': 메뉴가 펼쳐진 직후 발생 (expanded 상태)
+    navContent.addEventListener('shown.bs.collapse', () => {
+      // 펼쳐진 상태 → span 표시, X 아이콘 숨김
+      
+      spanIcon.style.display = 'none';
+      xIcon.style.display = 'inline-block';
+    });
   });

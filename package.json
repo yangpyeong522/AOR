@@ -12,6 +12,7 @@
         "body-parser": "^1.20.0",
         "bootstrap-icons": "^1.11.3",
         "cors": "^2.8.5",
+        "dayjs": "^1.11.13",
         "dotenv": "^16.4.7",
         "ejs": "^3.1.10",
         "express": "^4.21.1",
@@ -20,6 +21,7 @@
         "mongodb": "^4.17.2",
         "mysql2": "^3.11.5",
         "request": "^2.88.2",
-        "sequelize": "^6.37.5"
+        "sequelize": "^6.37.5",
+        "serve-favicon": "^2.5.0"
     }
 }
